@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ଅକ୍ଷର - Kids Corner</title>
     <style>
-        /* General Reset & Body Styles from index.html for consistency */
         :root {
             --bg-light: #f3f4f6;
             --bg-dark: #111827;
-            --container-bg-light: #ffffff;
-            --container-bg-dark: #1f2937;
             --text-primary-light: #1f2937;
             --text-primary-dark: #ffffff;
             --text-secondary-light: #6b7280;
             --text-secondary-dark: #9ca3af;
             --border-light: #e5e7eb;
             --border-dark: #374151;
+            --submenu-bg-light: #f9fafb;
+            --submenu-bg-dark: #374151;
         }
 
         body {
@@ -24,10 +23,6 @@
             -webkit-tap-highlight-color: transparent;
             background-color: var(--bg-light);
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             color: var(--text-primary-light);
         }
 
@@ -37,19 +32,16 @@
                 background-color: var(--bg-dark);
                 color: var(--text-primary-dark);
             }
-            .header h1 {
-                 color: var(--text-primary-dark);
-            }
-            .back-button {
-                 color: var(--text-secondary-dark);
-            }
+            .header { border-bottom-color: var(--border-dark); }
+            .header h1 { color: var(--text-primary-dark); }
+            .back-button { color: var(--text-secondary-dark); }
+            .submenu { background-color: var(--submenu-bg-dark); }
+            .submenu-item { color: var(--text-primary-dark); border-top-color: #4b5563; }
         }
 
         /* Main Container */
         .main-container {
             width: 100%;
-            max-width: 24rem; /* 384px */
-            margin: auto;
             padding: 1.5rem;
             box-sizing: border-box;
             display: flex;
@@ -64,6 +56,10 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border-light);
             margin-bottom: 1.5rem;
+            max-width: 64rem;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .back-button {
@@ -72,57 +68,78 @@
             color: var(--text-secondary-light);
             transition: opacity 0.2s;
         }
-        .back-button:hover {
-            opacity: 0.7;
-        }
+        .back-button:hover { opacity: 0.7; }
 
         .header h1 {
-            font-size: 1.875rem; /* 30px */
+            font-size: 1.875rem;
             font-weight: 700;
             margin: 0;
-            color: var(--text-primary-light);
         }
 
         /* Tiles List */
         .tiles-list {
             flex-grow: 1;
-            overflow-y: auto; /* For scrolling if content exceeds height */
+            overflow-y: auto;
+            width: 100%;
+            max-width: 64rem;
+            margin: 0 auto;
         }
         
-        .tile-link {
-            text-decoration: none;
-        }
-
+        /* Accordion Tile */
         .tile {
             width: 100%;
-            padding: 1.5rem 0; /* Vertical padding */
+            padding: 1.5rem 0;
             margin-bottom: 1rem;
-            border-radius: 0.75rem; /* 12px */
+            border-radius: 0.75rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             cursor: pointer;
-            transition: transform 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
             box-sizing: border-box;
+            position: relative;
+            z-index: 2; /* Keep tile above submenu */
         }
-
-        .tile:hover {
-            transform: scale(1.02);
-        }
-
-        .tile:active {
-            transform: scale(0.98);
+        
+        .tile.active {
+             border-bottom-left-radius: 0;
+             border-bottom-right-radius: 0;
+             margin-bottom: 0;
         }
         
         .tile-text {
-            font-size: 1.25rem; /* 20px */
+            font-size: 1.25rem;
             font-weight: 600;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
+
+        /* Submenu for dropdown */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            background-color: var(--submenu-bg-light);
+            border-radius: 0 0 0.75rem 0.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: max-height 0.4s ease-in-out;
+        }
         
-        /* New Gradient Classes for Tiles */
+        .submenu-item {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary-light);
+            border-top: 1px solid var(--border-light);
+            transition: background-color 0.2s;
+        }
+
+        .submenu-item:hover {
+            background-color: rgba(0,0,0,0.05);
+        }
+        
+        /* Gradient Classes */
         .gradient-1 { background-image: linear-gradient(to right, #ef4444, #dc2626); }
         .gradient-2 { background-image: linear-gradient(to right, #f97316, #ea580c); }
         .gradient-3 { background-image: linear-gradient(to right, #eab308, #d97706); }
@@ -131,6 +148,32 @@
         .gradient-6 { background-image: linear-gradient(to right, #3b82f6, #2563eb); }
         .gradient-7 { background-image: linear-gradient(to right, #a855f7, #9333ea); }
 
+        /* --- Responsive Design --- */
+        /* For tablets and larger */
+        @media (min-width: 768px) {
+            .main-container {
+                padding: 2rem;
+            }
+
+            .header h1 {
+                font-size: 2.25rem; /* 36px */
+            }
+
+            .tile {
+                padding: 2rem 0;
+            }
+
+            .tile-text {
+                font-size: 1.5rem; /* 24px */
+            }
+        }
+
+        /* For desktops and larger */
+        @media (min-width: 1024px) {
+            .main-container {
+                padding: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -141,43 +184,110 @@
         </header>
 
         <main class="tiles-list">
-            <a href="level1.html" class="tile-link">
+            <!-- Level 1 -->
+            <div class="tile-container">
                 <div class="tile gradient-1">
                     <span class="tile-text">ସ୍ତର-୧</span>
                 </div>
-            </a>
-            <a href="level2.html" class="tile-link">
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ଆସ ଗପ ଶୁଣିବା</a>
+                    <a href="#" class="submenu-item">ଆସ ଗୀତାଶୁଣିବା</a>
+                    <a href="#" class="submenu-item">ଆସ ଚିତ୍ର ଦେଖି କହିବା</a>
+                </div>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="tile-container">
                 <div class="tile gradient-2">
                     <span class="tile-text">ସ୍ତର-୨</span>
                 </div>
-            </a>
-            <a href="level3.html" class="tile-link">
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ଧ୍ୱନି ପରିଚୟ</a>
+                    <a href="#" class="submenu-item">ଅକ୍ଷର ବା ବର୍ଣ୍ଣ ପରିଚୟ</a>
+                </div>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="tile-container">
                 <div class="tile gradient-3">
                     <span class="tile-text">ସ୍ତର-୩</span>
                 </div>
-            </a>
-            <a href="level4.html" class="tile-link">
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ବିଭିନ୍ନ ଧ୍ବନୀର ଶବ୍ଦ କହିବା</a>
+                    <a href="#" class="submenu-item">ବିଭିନ୍ନ ବର୍ଣ୍ଣକୁ ନେଇ ଶବ୍ଦ ଗଢିବା</a>
+                </div>
+            </div>
+
+            <!-- Level 4 -->
+            <div class="tile-container">
                 <div class="tile gradient-4">
                     <span class="tile-text">ସ୍ତର-୪</span>
                 </div>
-            </a>
-            <a href="level5.html" class="tile-link">
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ଆସ ପଢିବା</a>
+                </div>
+            </div>
+
+            <!-- Level 5 -->
+            <div class="tile-container">
                 <div class="tile gradient-5">
                     <span class="tile-text">ସ୍ତର-୫</span>
                 </div>
-            </a>
-            <a href="level6.html" class="tile-link">
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ଆସ ଲେଖିବା</a>
+                </div>
+            </div>
+
+            <!-- Level 6 -->
+            <div class="tile-container">
                 <div class="tile gradient-6">
                     <span class="tile-text">ସ୍ତର-୬</span>
                 </div>
-            </a>
-            <a href="level7.html" class="tile-link">
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ଆସ କର୍ଜ୍ଯାଫର୍ଦ୍ଦ ପୂରଣ କରିବା</a>
+                </div>
+            </div>
+
+            <!-- Level 7 -->
+            <div class="tile-container">
                 <div class="tile gradient-7">
                     <span class="tile-text">ସ୍ତର-୭</span>
                 </div>
-            </a>
+                <div class="submenu">
+                    <a href="#" class="submenu-item">ଟ୍ରାକର</a>
+                </div>
+            </div>
         </main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tiles = document.querySelectorAll('.tile');
+
+            tiles.forEach(tile => {
+                tile.addEventListener('click', function () {
+                    const currentSubmenu = this.nextElementSibling;
+                    const wasActive = this.classList.contains('active');
+
+                    // Close all other submenus
+                    tiles.forEach(otherTile => {
+                        if (otherTile !== this) {
+                            otherTile.classList.remove('active');
+                            otherTile.nextElementSibling.style.maxHeight = null;
+                        }
+                    });
+
+                    // Toggle the clicked tile's submenu
+                    if (wasActive) {
+                        this.classList.remove('active');
+                        currentSubmenu.style.maxHeight = null;
+                    } else {
+                        this.classList.add('active');
+                        currentSubmenu.style.maxHeight = currentSubmenu.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 
