@@ -3,286 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Corner</title>
+    <title>Kids App UI</title>
     <style>
-        /* General Reset & Body Styles */
         :root {
             --bg-light: #f3f4f6;
             --bg-dark: #111827;
-            --container-bg-light: #ffffff;
-            --container-bg-dark: #1f2937;
             --text-primary-light: #1f2937;
             --text-primary-dark: #ffffff;
             --text-secondary-light: #6b7280;
             --text-secondary-dark: #9ca3af;
-            --icon-light: #374151;
-            --icon-dark: #d1d5db;
         }
 
         body {
-            /* Use system fonts for offline compatibility */
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Removes blue tap highlight on mobile */
-            background-color: var(--bg-light);
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            background-color: var(--bg-light);
             color: var(--text-primary-light);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Dark Mode support */
         @media (prefers-color-scheme: dark) {
             body {
                 background-color: var(--bg-dark);
                 color: var(--text-primary-dark);
             }
-            .main-container {
-                background-color: var(--container-bg-dark);
-            }
-            #greeting {
+             .greeting h2, .greeting p {
                 color: var(--text-primary-dark);
-            }
-            .subtitle {
-                color: var(--text-secondary-dark);
-            }
-            .hamburger-icon svg {
-                stroke: var(--icon-dark);
             }
         }
 
-        /* Main Container */
-        .main-container {
+        .app-container {
             width: 100%;
-            max-width: 24rem; /* 384px */
-            height: 100vh;
-            max-height: 48rem; /* 768px */
-            margin: auto;
-            background-color: var(--container-bg-light);
-            border-radius: 1rem; /* 16px */
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            padding: 1.5rem; /* 24px */
+            min-height: 100vh;
+            padding: 1.5rem;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
         }
-        
-        .main-container > * + * {
-             margin-top: 1.5rem; /* space-y-6 */
+
+        .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1rem;
         }
 
-        /* Header section */
-        header {
-            text-align: left;
+        .hamburger-menu a {
+            text-decoration: none;
+            color: var(--text-secondary-light);
         }
 
         .hamburger-icon {
-            width: 1.75rem; /* 28px */
-            height: 1.75rem; /* 28px */
-            cursor: pointer;
-            margin-bottom: 1rem; /* 16px */
-            display: block; /* Ensures it takes up its own line */
-        }
-        .hamburger-icon svg {
-            stroke: var(--icon-light);
-        }
-
-        #greeting {
-            font-size: 1.875rem; /* 30px */
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-primary-light);
+            width: 2rem;
+            height: 2rem;
+            stroke-width: 2;
         }
         
-        .subtitle {
-            color: var(--text-secondary-light);
-            margin: 0;
+        .greeting {
+            text-align: left;
+            margin-top: -0.5rem;
+            margin-left: -0.25rem;
         }
 
-        /* Grid Layout for Tiles */
-        .grid-container {
+        .greeting h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .greeting p {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-secondary-light);
+        }
+
+        .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem; /* 16px */
-            padding-bottom: 1rem;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            width: 100%;
         }
 
         .tile {
             aspect-ratio: 1 / 1;
             border-radius: 1rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            text-align: center;
             color: white;
-            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s ease-in-out;
+            padding: 0.5rem;
         }
 
         .tile:hover {
             transform: scale(1.05);
         }
-        
+
         .tile:active {
             transform: scale(0.95);
         }
 
         .tile-icon {
-            width: 3rem; /* 48px */
-            height: 3rem; /* 48px */
-            margin-bottom: 0.5rem; /* 8px */
+            font-size: 2.5rem;
+            font-weight: bold;
+            line-height: 1;
         }
 
-        .tile-text {
-            color: white;
-            font-size: 1.125rem; /* 18px */
+        .tile p {
+            margin-top: 0.5rem;
             font-weight: 600;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-        }
-
-        .tile-link {
-            text-decoration: none;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 360px) {
-            .grid-container {
-                gap: 0.75rem; /* 12px */
-            }
-            .tile-text {
-                font-size: 1rem; /* 16px */
-            }
+            font-size: 0.875rem;
         }
         
-        /* Gradient Classes for Tiles */
-        .gradient-1 { background-image: linear-gradient(to right top, #f97316, #ea580c); }
-        .gradient-2 { background-image: linear-gradient(to right top, #22c55e, #16a34a); }
-        .gradient-3 { background-image: linear-gradient(to right top, #a855f7, #9333ea); }
-        .gradient-4 { background-image: linear-gradient(to right top, #14b8a6, #0d9488); }
-        .gradient-5 { background-image: linear-gradient(to right top, #eab308, #d97706); }
-        .gradient-6 { background-image: linear-gradient(to right top, #3b82f6, #2563eb); }
+        .gradient-1 { background-image: linear-gradient(to top right, #f87171, #ef4444); }
+        .gradient-2 { background-image: linear-gradient(to top right, #fb923c, #f97316); }
+        .gradient-3 { background-image: linear-gradient(to top right, #facc15, #eab308); }
+        .gradient-4 { background-image: linear-gradient(to top right, #4ade80, #22c55e); }
+        .gradient-5 { background-image: linear-gradient(to top right, #60a5fa, #3b82f6); }
+        .gradient-6 { background-image: linear-gradient(to top right, #c084fc, #a855f7); }
+
+        /* --- Responsive Design --- */
+        /* For tablets and larger */
+        @media (min-width: 640px) { /* Changed from 768px for better grid layout on more devices */
+            .app-container {
+                padding: 2rem;
+            }
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1.5rem;
+                max-width: 64rem; /* Add max-width to center content on very large screens */
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .greeting h2 {
+                font-size: 2rem;
+            }
+            .greeting p {
+                font-size: 1.125rem;
+            }
+            .tile p {
+                 font-size: 1rem;
+            }
+        }
+
+        /* For desktops and larger */
+        @media (min-width: 1024px) {
+            .app-container {
+                padding: 2.5rem;
+            }
+             .greeting h2 {
+                font-size: 2.25rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Main container that simulates a phone screen -->
-    <div class="main-container">
-        
-        <!-- Header Section with Time-based Greeting -->
-        <header>
-            <!-- Hamburger Icon -->
-            <a href="menu.html" class="hamburger-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width: 100%; height: 100%;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-            </a>
-            
-            <h1 id="greeting"></h1>
-            <p class="subtitle">Let's have some fun!</p>
+    <div class="app-container">
+        <header class="header">
+             <div class="hamburger-menu">
+                <a href="menu.html">
+                    <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </a>
+             </div>
         </header>
+        
+         <div class="greeting">
+            <h2 id="greeting-text">Good Morning</h2>
+            <p>Let's learn something new today!</p>
+        </div>
 
-        <!-- Grid Layout for the App Tiles -->
-        <main class="grid-container">
-            
-            <!-- Tile 1 -->
-            <a href="akhyara.html" class="tile-link">
-                <div class="tile gradient-1">
-                    <div class="tile-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
-                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="bold" fill="white">କ</text>
-                        </svg>
-                    </div>
-                    <span class="tile-text">ଅକ୍ଷର</span>
-                </div>
+        <main class="grid">
+            <a href="akhyara.html" class="tile gradient-1">
+                <div class="tile-icon">କ</div>
+                <p>ଅକ୍ଷର</p>
             </a>
-            
-            <!-- Tile 2 -->
-            <a href="matra.html" class="tile-link">
-                <div class="tile gradient-2">
-                    <div class="tile-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
-                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="bold" fill="white">କା</text>
-                        </svg>
-                    </div>
-                    <span class="tile-text">ମାତ୍ରା</span>
-                </div>
+            <a href="matra.html" class="tile gradient-2">
+                <div class="tile-icon">କା</div>
+                <p>ମାତ୍ରା</p>
             </a>
-
-            <!-- Tile 3 -->
-            <a href="phala.html" class="tile-link">
-                <div class="tile gradient-3">
-                    <div class="tile-icon">
-                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
-                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="bold" fill="white">କ୍ଯ</text>
-                        </svg>
-                    </div>
-                    <span class="tile-text">ଫଳା</span>
-                </div>
+            <a href="phala.html" class="tile gradient-3">
+                <div class="tile-icon">କ୍ୟ</div>
+                <p>ଫଳା</p>
             </a>
-
-            <!-- Tile 4 -->
-            <a href="juktakhyara.html" class="tile-link">
-                <div class="tile gradient-4">
-                    <div class="tile-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width: 100%; height: 100%;">
-                            <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="18" font-weight="bold" fill="white">ଙ୍କ</text>
-                        </svg>
-                    </div>
-                    <span class="tile-text">ଯୁକ୍ତାକ୍ଷର</span>
-                </div>
+            <a href="juktakhyara.html" class="tile gradient-4">
+                <div class="tile-icon">ଙ୍କ</div>
+                <p>ଯୁକ୍ତାକ୍ଷର</p>
             </a>
-            
-            <!-- Tile 5 -->
-            <a href="anuchheda.html" class="tile-link">
-                <div class="tile gradient-5">
-                    <div class="tile-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 100%; height: 100%;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h12.5m-12.5 5.25h16.5" />
-                        </svg>
-                    </div>
-                    <span class="tile-text">ଅନୁଛେଦ</span>
+            <a href="anucheda.html" class="tile gradient-5">
+                <div class="tile-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                 </div>
+                <p>ଅନୁଛେଦ</p>
             </a>
-
-            <!-- Tile 6 -->
-            <a href="sahayata.html" class="tile-link">
-                <div class="tile gradient-6">
-                    <div class="tile-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 100%; height: 100%;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.068.157 2.148.279 3.238.364.494.033.99.064 1.482.092.672.033 1.34.05 2.003.051a23.234 23.234 0 002.003-.05 12.28 12.28 0 001.482-.092c1.09-.085 2.17-.207 3.238-.364 1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.344 48.344 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                        </svg>
-                    </div>
-                    <span class="tile-text">ସହାୟତା</span>
+            <a href="sahayata.html" class="tile gradient-6">
+                 <div class="tile-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                 </div>
+                <p>ସହାୟତା</p>
             </a>
-
         </main>
     </div>
+
     <script>
-        // JavaScript to set the greeting based on the time of day
-        document.addEventListener('DOMContentLoaded', () => {
-            const greetingElement = document.getElementById('greeting');
-            const currentHour = new Date().getHours();
-            
-            let greetingText;
-            let emoji;
+        const greetingText = document.getElementById('greeting-text');
+        const currentHour = new Date().getHours();
 
-            if (currentHour < 12) {
-                greetingText = "Good Morning";
-                emoji = "☀️";
-            } else if (currentHour < 18) {
-                greetingText = "Good Afternoon";
-                emoji = "😊";
-            } else {
-                greetingText = "Good Evening";
-                emoji = "🌙";
-            }
-
-            greetingElement.textContent = `${greetingText} ${emoji}`;
-        });
+        if (currentHour < 12) {
+            greetingText.textContent = 'Good Morning';
+        } else if (currentHour < 18) {
+            greetingText.textContent = 'Good Afternoon';
+        } else {
+            greetingText.textContent = 'Good Evening';
+        }
     </script>
-
 </body>
 </html>
 
